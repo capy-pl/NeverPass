@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/password-management/server/api/account"
 	"github.com/password-management/server/api/auth"
 )
 
@@ -16,4 +17,5 @@ func Register(r *mux.Router) {
 		fmt.Println("api")
 	})
 	auth.Register(s)
+	account.Register(s)
 }
