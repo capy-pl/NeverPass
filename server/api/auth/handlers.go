@@ -1,16 +1,44 @@
 package auth
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
+
+	"github.com/password-management/server/auth"
+	"github.com/password-management/server/db"
+	"github.com/password-management/server/models"
+	"golang.org/x/crypto/bcrypt"
 )
 
-func authAcountPOSTHandler(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(200)
-	fmt.Println("Add account")
+type loginBody struct {
+	Account  string
+	Password string
 }
 
-func authAcountGETHandler(w http.ResponseWriter, r *http.Request) {
+type loginResponse struct {
+	Token string
+}
+
+func authLoginHandler(w http.ResponseWriter, r *http.Request) {
+	var body loginBody
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&body)
+	if err != nil {
+		http.Error(w, "Error code: 100", 400)
+		return
+	}
+	var user models.User
+	conn := db.Get()
+	if err := conn.Db.Where("account = ?", body.Account).First(&user).Error; err != nil {
+		http.Error(w, "", 404)
+		return
+	}
+	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
+	if err != nil {
+		http.Error(w, "", 401)
+	}
+	token := auth.IssueSignedToken(user.Account)
 	w.WriteHeader(200)
-	fmt.Println("View account")
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(loginResponse{token})
 }
