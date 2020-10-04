@@ -3,6 +3,7 @@ package auth
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/password-management/server/auth"
 	"github.com/password-management/server/db"
@@ -37,8 +38,8 @@ func authLoginHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "", 401)
 	}
-	token := auth.IssueSignedToken(user.Account)
+	token := auth.IssueSignedToken(strconv.Itoa(int(user.ID)))
+	json.NewEncoder(w).Encode(loginResponse{token})
 	w.WriteHeader(200)
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(loginResponse{token})
 }
