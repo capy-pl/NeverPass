@@ -6,8 +6,8 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/password-management/server/api"
-	"github.com/password-management/server/db"
-	"github.com/password-management/server/middleware"
+	"github.com/password-management/server/core/db"
+	"github.com/password-management/server/core/middleware"
 )
 
 func main() {

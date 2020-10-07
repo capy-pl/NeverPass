@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/password-management/server/db"
+	"github.com/password-management/server/core/db"
 	"github.com/password-management/server/models"
 	"golang.org/x/crypto/bcrypt"
 )

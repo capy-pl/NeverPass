@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/password-management/server/auth"
+	"github.com/password-management/server/core/auth"
 )
 
 // LoginRequired inspects incoming request to see if it has a valid token.

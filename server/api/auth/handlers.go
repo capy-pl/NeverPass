@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/password-management/server/auth"
-	"github.com/password-management/server/db"
+	"github.com/password-management/server/core/auth"
+	"github.com/password-management/server/core/db"
 	"github.com/password-management/server/models"
 	"golang.org/x/crypto/bcrypt"
 )
