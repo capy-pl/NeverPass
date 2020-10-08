@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -8,9 +9,10 @@ import (
 	"github.com/password-management/server/api"
 	"github.com/password-management/server/core/db"
 	"github.com/password-management/server/core/middleware"
+	"github.com/password-management/server/core/util"
 )
 
-func main() {
+func webserver() {
 	r := mux.NewRouter()
 
 	r.Use(middleware.IncomeTrafficLogger)
@@ -22,4 +24,29 @@ func main() {
 	conn.New()
 	log.Println("The server starts listening on localhost:8080")
 	log.Fatal(http.ListenAndServe(":8080", r))
+}
+
+func executeCommand(command string) {
+	switch command {
+	case "webserver":
+		webserver()
+	case "migrate":
+		db.Migrate(nil)
+	case "cleandb":
+		db.CleanDB(nil)
+	case "populate":
+		db.Populate(nil)
+	case "initdb":
+		db.InitDB(nil)
+	default:
+		fmt.Println("Please provide valid command.")
+	}
+}
+
+func main() {
+	command, err := util.ParseArg()
+	if err != nil {
+		log.Fatal(err)
+	}
+	executeCommand(command)
 }

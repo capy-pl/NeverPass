@@ -30,7 +30,7 @@ func authLoginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	var user models.User
 	conn := db.Get()
-	if err := conn.Db.Where("account = ?", body.Account).First(&user).Error; err != nil {
+	if err := conn.DB.Where("account = ?", body.Account).First(&user).Error; err != nil {
 		http.Error(w, "", 404)
 		return
 	}
