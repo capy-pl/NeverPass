@@ -39,7 +39,6 @@ func authLoginHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "", 401)
 	}
 	token := auth.IssueSignedToken(strconv.Itoa(int(user.ID)))
-	json.NewEncoder(w).Encode(loginResponse{token})
-	w.WriteHeader(200)
 	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(loginResponse{token})
 }
