@@ -109,7 +109,11 @@ func viewItemHandler(w http.ResponseWriter, r *http.Request) {
 		Take(&item, "creator_id = ? AND id = ?", userID, itemID)
 
 	if result.Error != nil {
-		http.Error(w, "", 400)
+		if result.RowsAffected == 0 {
+			http.Error(w, "", 404)
+		} else {
+			http.Error(w, "", 400)
+		}
 		return
 	}
 
