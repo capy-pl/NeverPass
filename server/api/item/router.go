@@ -10,5 +10,6 @@ func Register(r *mux.Router) {
 	sub := r.PathPrefix("/item").Subrouter()
 	sub.Use(middleware.LoginRequired)
 	sub.HandleFunc("/", addItemHandler).Methods("POST")
-	sub.HandleFunc("/", viewItemHandler).Methods("GET")
+	sub.HandleFunc("/", viewItemsHandler).Methods("GET")
+	sub.HandleFunc("/{id}", viewItemHandler).Methods("GET")
 }

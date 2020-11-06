@@ -1,3 +1,4 @@
+
 build:
 	go build -o bin/main server/main.go
 run:

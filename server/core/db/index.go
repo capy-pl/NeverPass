@@ -75,6 +75,12 @@ func Migrate(conn *Connection) {
 		log.Fatalln(err)
 	}
 
+	log.Println("Migrate table: item_fields.")
+	err = conn.DB.AutoMigrate(&models.ItemField{})
+	if err != nil {
+		log.Fatalln(err)
+	}
+
 	log.Println("Database migrations end.")
 }
 
