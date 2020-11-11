@@ -15,7 +15,6 @@ var secretToken []byte = []byte("my-secret-token")
 
 // IssueSignedToken issues a signed jwt token for users, which last for 1 week.
 func IssueSignedToken(account string) string {
-	// dur, _ := time.ParseDuration(duration)
 	exp := time.Now().Add(time.Hour * 24 * duration).Unix()
 	claims := jwt.StandardClaims{
 		Audience:  account,
