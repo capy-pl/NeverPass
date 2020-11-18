@@ -14,11 +14,21 @@ import (
 
 func webserver() {
 	r := mux.NewRouter()
-
 	r.Use(middleware.IncomeTrafficLogger)
+	/* TBD: need type assertion to make following handler works on the
+	router.
+	I tried
+		r := mux.NewRouter().(http.Handler)
+	which seems not working.
+	*/
+	// r = handlers.LoggingHandler(os.Stdin, r)
+	// r = handlers.CompressHandler(r)
+
+	// http health check path route for k8s.
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
 	})
+
 	api.Register(r)
 	conn := db.Get()
 	conn.New()
