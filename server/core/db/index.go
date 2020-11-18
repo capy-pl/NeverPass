@@ -94,6 +94,7 @@ func InitDB(conn *Connection) error {
 		conn.New()
 	}
 
+	CleanDB(conn)
 	Migrate(conn)
 	Populate(conn)
 	return nil
@@ -136,6 +137,18 @@ func CleanDB(conn *Connection) error {
 
 	log.Println("Drop table: items.")
 	err = db.Migrator().DropTable(&models.Item{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Drop table: item_fields.")
+	err = db.Migrator().DropTable(&models.ItemField{})
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Drop table: item_item_fields.")
+	err = db.Migrator().DropTable("item_item_fields")
 	if err != nil {
 		log.Fatal(err)
 	}
