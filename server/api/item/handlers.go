@@ -40,6 +40,7 @@ func addItemHandler(w http.ResponseWriter, r *http.Request) {
 			fields = append(fields, models.ItemField{Value: value, FieldDefinitionID: int(id)})
 		}
 	}
+
 	item := models.Item{
 		TypeID:    int(typeInstance.ID),
 		CreatorID: int(id),
@@ -76,7 +77,8 @@ func viewItemsHandler(w http.ResponseWriter, r *http.Request) {
 		Limit(limit).
 		Preload("Type").
 		Preload("Values").
-		Find(&items, "creator_id = ?", userID)
+		Preload("Values.FieldDefinition").
+		Find(&items, "creator_id = ? AND Status = 1", userID)
 
 	if result.Error != nil {
 		http.Error(w, "", 400)
@@ -106,7 +108,8 @@ func viewItemHandler(w http.ResponseWriter, r *http.Request) {
 	result := conn.DB.
 		Preload("Type").
 		Preload("Values").
-		Take(&item, "creator_id = ? AND id = ?", userID, itemID)
+		Preload("Values.FieldDefinition").
+		Take(&item, "creator_id = ? AND id = ? AND Status = 1", userID, itemID)
 
 	if result.Error != nil {
 		if result.RowsAffected == 0 {
@@ -119,4 +122,101 @@ func viewItemHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(item)
+}
+
+type updateItemRequestBody struct {
+	ItemID int
+	Fields map[string]string
+}
+
+func updateItemHandler(w http.ResponseWriter, r *http.Request) {
+	var body updateItemRequestBody
+	vars := mux.Vars(r)
+	itemIDStr, ok := vars["id"]
+	if !ok {
+		http.Error(w, "", 400)
+		return
+	}
+
+	itemID, err := strconv.Atoi(itemIDStr)
+	if err != nil {
+		http.Error(w, "", 400)
+		return
+	}
+
+	err = json.NewDecoder(r.Body).Decode(&body)
+	if err != nil {
+		http.Error(w, "error code: 200", 400)
+		return
+	}
+
+	userID := auth.FetchIDInRequest(r)
+	conn := db.Get()
+	var item models.Item
+	result := conn.DB.
+		Preload("Type").
+		Preload("Values").
+		Preload("Values.FieldDefinition").
+		Take(&item, "creator_id = ? AND id = ?", userID, itemID)
+
+	if result.Error != nil {
+		if result.RowsAffected == 0 {
+			http.Error(w, "", 404)
+		} else {
+			http.Error(w, "", 400)
+		}
+		return
+	}
+
+	for index, value := range item.Values {
+		if val, ok := body.Fields[value.FieldDefinition.Name]; ok {
+			item.Values[index].Value = val
+		}
+	}
+
+	updateResult := conn.DB.Save(&item)
+	if updateResult.Error != nil {
+		http.Error(w, "", 400)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(item)
+}
+
+func deleteItemHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	itemIDStr, ok := vars["id"]
+	if !ok {
+		http.Error(w, "", 400)
+		return
+	}
+
+	itemID, err := strconv.Atoi(itemIDStr)
+	if err != nil {
+		http.Error(w, "", 400)
+		return
+	}
+
+	userID := auth.FetchIDInRequest(r)
+	conn := db.Get()
+
+	var item models.Item
+	result := conn.DB.
+		Take(&item, "creator_id = ? AND id = ? AND Status = 1", userID, itemID)
+
+	if result.Error != nil {
+		if result.RowsAffected == 0 {
+			http.Error(w, "", 404)
+		} else {
+			http.Error(w, "", 400)
+		}
+		return
+	}
+
+	deleteResult := conn.DB.Model(&item).Update("Status", 0)
+	if deleteResult.Error != nil {
+		http.Error(w, "", 400)
+		return
+	}
 }

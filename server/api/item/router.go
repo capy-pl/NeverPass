@@ -12,4 +12,6 @@ func Register(r *mux.Router) {
 	sub.HandleFunc("/", addItemHandler).Methods("POST")
 	sub.HandleFunc("/", viewItemsHandler).Methods("GET")
 	sub.HandleFunc("/{id}", viewItemHandler).Methods("GET")
+	sub.HandleFunc("/{id}", updateItemHandler).Methods("PUT")
+	sub.HandleFunc("/{id}", deleteItemHandler).Methods("DELETE")
 }
