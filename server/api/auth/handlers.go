@@ -17,7 +17,7 @@ type loginBody struct {
 }
 
 type loginResponse struct {
-	Token string
+	Token string `json:"token"`
 }
 
 func authLoginHandler(w http.ResponseWriter, r *http.Request) {
