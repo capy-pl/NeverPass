@@ -7,4 +7,5 @@ type User struct {
 	gorm.Model
 	Account  string `gorm:"unique;not null"`
 	Password string `gorm:"not null"`
+	Pk       string `gorm:"not null"`
 }
