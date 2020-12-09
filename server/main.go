@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/password-management/server/api"
 	"github.com/password-management/server/core/db"
@@ -13,16 +14,9 @@ import (
 )
 
 func webserver() {
+	var handler http.Handler
 	r := mux.NewRouter()
-	r.Use(middleware.IncomeTrafficLogger)
-	/* TBD: need type assertion to make following handler works on the
-	router.
-	I tried
-		r := mux.NewRouter().(http.Handler)
-	which seems not working.
-	*/
-	// r = handlers.LoggingHandler(os.Stdin, r)
-	// r = handlers.CompressHandler(r)
+	r.Use(middleware.LoggingMiddleware)
 
 	// http health check path route for k8s.
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -32,8 +26,14 @@ func webserver() {
 	api.Register(r)
 	conn := db.Get()
 	conn.New()
+
+	handler = handlers.CORS(
+		handlers.AllowedHeaders([]string{"Content-Type"}),
+		handlers.AllowedMethods([]string{http.MethodPost, http.MethodGet, http.MethodPut, http.MethodDelete}),
+		handlers.AllowedOrigins([]string{"*"}),
+	)(r)
 	log.Println("The server starts listening on localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe(":8080", handler))
 }
 
 func executeCommand(command string) {

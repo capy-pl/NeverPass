@@ -6,6 +6,7 @@ import (
 	"github.com/password-management/server/api/auth"
 	"github.com/password-management/server/api/item"
 	typeapi "github.com/password-management/server/api/type"
+	"github.com/password-management/server/api/user"
 )
 
 // Register function registers all subroutes to given router.
@@ -15,4 +16,5 @@ func Register(r *mux.Router) {
 	account.Register(s)
 	item.Register(s)
 	typeapi.Register(s)
+	user.Register(s)
 }
