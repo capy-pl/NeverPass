@@ -1,5 +1,7 @@
 import { Reducer, Action } from '@reduxjs/toolkit';
 
+import { Type } from '../../model';
+
 export interface GlobalState {
   hostname: string;
   protocol: 'http' | 'https';
@@ -49,8 +51,22 @@ const initUserState: UserState = {
   pk: '',
 };
 
-export type ActionType = GlobalActionType | AuthActionType | UserActionType;
-export type Action = GlobalAction | AuthAction | UserAction;
+export type TypeState = Type[];
+export type TypeActionType = 'push' | 'remove';
+
+export interface TypeAction extends Action<TypeActionType> {
+  value: Type | string;
+}
+
+const initTypeState: TypeState = [];
+
+export type ActionType =
+  | GlobalActionType
+  | AuthActionType
+  | UserActionType
+  | TypeActionType;
+
+export type Actions = GlobalAction | AuthAction | UserAction | TypeAction;
 
 export const globalReducer: Reducer<GlobalState, GlobalAction> = (
   state: GlobalState = initGlobalState,
@@ -104,4 +120,11 @@ export const userReducer: Reducer<UserState, UserAction> = (
     default:
       return state;
   }
+};
+
+export const typeReducer: Reducer<TypeState, TypeAction> = (
+  state: TypeState = initTypeState,
+  action: TypeAction
+): TypeState => {
+  return state;
 };
