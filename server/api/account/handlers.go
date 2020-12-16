@@ -33,7 +33,7 @@ func addAcountGETHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if len(body.Account) > 20 || len(body.Password) > 15 {
+	if len(body.Account) > 200 || len(body.Password) > 200 {
 		http.Error(w, "Error Code: 102", 400)
 		return
 	}
