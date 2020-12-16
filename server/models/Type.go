@@ -8,9 +8,9 @@ import (
 
 // Type represents the item's type.
 type Type struct {
-	Name             string            `gorm:"unique;not null;uniqueIndex"`
-	Default          bool              `gorm:"not null;<-:create"`
-	FieldDefinitions []FieldDefinition `gorm:"many2many:type_fields;constraints:OnUpdate:CASCADE,OnDelete:SET NULL"`
+	Name             string            `gorm:"unique;not null;uniqueIndex" json:"name"`
+	Default          bool              `gorm:"not null;<-:create" json:"default"`
+	FieldDefinitions []FieldDefinition `gorm:"many2many:type_fields;constraints:OnUpdate:CASCADE,OnDelete:SET NULL" json:"fieldDefinitions"`
 	gorm.Model
 }
 
