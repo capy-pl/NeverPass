@@ -28,7 +28,7 @@ func webserver() {
 	conn.New()
 
 	handler = handlers.CORS(
-		handlers.AllowedHeaders([]string{"Content-Type"}),
+		handlers.AllowedHeaders([]string{"Content-Type", "Authorization"}),
 		handlers.AllowedMethods([]string{http.MethodPost, http.MethodGet, http.MethodPut, http.MethodDelete}),
 		handlers.AllowedOrigins([]string{"*"}),
 	)(r)
