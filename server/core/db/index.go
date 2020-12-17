@@ -9,6 +9,7 @@ import (
 	"gorm.io/gorm"
 )
 
+const host = "127.0.0.1"
 const dbName = "pwdmg"
 const dbUsername = "admin"
 const dbPwd = "admin"
@@ -23,9 +24,10 @@ var conn = Connection{}
 
 // New function tries to establish a new connection to sql server.
 func (conn *Connection) New() {
-	dsn := fmt.Sprintf("user=%s password=%s dbname=%s port=%s",
+	dsn := fmt.Sprintf("user=%s password=%s host=%s dbname=%s port=%s",
 		dbUsername,
 		dbPwd,
+		host,
 		dbName,
 		port)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
