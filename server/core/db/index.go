@@ -167,11 +167,11 @@ func Populate(conn *Connection) error {
 	DB := conn.DB
 
 	// Create some basic field_definitions.
-	nameField := models.FieldDefinition{Name: "name", Encrypted: true}
-	accountField := models.FieldDefinition{Name: "account", Encrypted: true}
-	passwordField := models.FieldDefinition{Name: "password", Encrypted: true}
+	nameField := models.FieldDefinition{Name: "name", VerboseName: "name", Encrypted: true}
+	accountField := models.FieldDefinition{Name: "account", VerboseName: "account", Encrypted: true}
+	passwordField := models.FieldDefinition{Name: "password", VerboseName: "password", Encrypted: true}
 
-	passwordsType := models.Type{Name: "passwords", Default: true}
+	passwordsType := models.Type{Name: "password", VerboseName: "password", Default: true}
 
 	DB.Create(&nameField)
 	DB.Create(&accountField)
@@ -179,6 +179,26 @@ func Populate(conn *Connection) error {
 	DB.Create(&passwordsType).
 		Association("FieldDefinitions").
 		Append([]models.FieldDefinition{nameField, accountField, passwordField})
+
+	paymentcardType := models.Type{Name: "paymentcard", VerboseName: "payment card", Default: true}
+	numberField := models.FieldDefinition{Name: "number", VerboseName: "card number", Encrypted: true}
+	expirationDateField := models.FieldDefinition{Name: "exp", VerboseName: "expiration date", Encrypted: true}
+	securitycodeField := models.FieldDefinition{Name: "securitycode", VerboseName: "security code", Encrypted: true}
+	DB.Create(&numberField)
+	DB.Create(&expirationDateField)
+	DB.Create(&securitycodeField)
+	DB.Create(&paymentcardType).
+		Association("FieldDefinitions").
+		Append([]models.FieldDefinition{nameField, numberField, expirationDateField, securitycodeField})
+
+	bankAccountType := models.Type{Name: "bankaccount", VerboseName: "bank account", Default: true}
+	accountNumberField := models.FieldDefinition{Name: "accountnumber", VerboseName: "account number", Encrypted: true}
+	pincodeField := models.FieldDefinition{Name: "pin", VerboseName: "PIN code", Encrypted: true}
+	DB.Create(&accountNumberField)
+	DB.Create(&pincodeField)
+	DB.Create(&bankAccountType).
+		Association("FieldDefinitions").
+		Append([]models.FieldDefinition{nameField, accountNumberField, pincodeField})
 
 	return nil
 }
