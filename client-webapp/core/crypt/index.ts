@@ -1,5 +1,6 @@
 import aes from 'crypto-js/aes';
 import cryptSHA256 from 'crypto-js/sha256';
+import enc from 'crypto-js/enc-utf8';
 
 // generate private key for user.
 export function generateSecretKey(): string {
@@ -24,6 +25,7 @@ export class CryptObject {
   }
 
   public decrypt(key: string): string {
-    return aes.decrypt(this.cipherParams, key).toString();
+    const bytes = aes.decrypt(this.cipherParams, key);
+    return bytes.toString(enc);
   }
 }

@@ -109,15 +109,12 @@ class SignUp extends React.PureComponent<WithRouterProps, State> {
     });
 
     try {
-      const { data } = await axios.post<UserCreateResponse>(
+      await axios.post<UserCreateResponse>(
         getAPIRoute('signup'),
         body
       );
 
       this.props.router.push(ClientRouteMap['message']);
-      this.setState({
-        loading: false,
-      });
     } catch (err) {
       this.setState({
         error: true,

@@ -5,17 +5,21 @@ import axios from 'axios';
 import {
   Button,
   Content,
+  Grid,
+  Row,
   Search,
   ToastNotification,
 } from 'carbon-components-react';
 import { Add16 } from '@carbon/icons-react';
 
 import UIShell from '../layout/UIShell';
-import { FormAddItem } from '../components';
+import { FormAddItem, ModalItemClickable } from '../components';
 import { ClientRouteMap, getAPIRoute } from '../core/routemap';
 import store from '../store';
 import { GetTypesResponse, GetItemsResponse } from '../core/api';
 import { Item, Type } from '../model';
+import { CryptObject } from '../core/crypt';
+import { getPK } from '../core/util';
 
 type State = {
   loading: boolean;
@@ -26,7 +30,7 @@ type State = {
 };
 
 class IndexPage extends React.Component<WithRouterProps, State> {
-  public state = {
+  public state: State = {
     loading: true,
     error: false,
     showFormAddItem: false,
@@ -54,6 +58,15 @@ class IndexPage extends React.Component<WithRouterProps, State> {
 
   public fetchItems = async () => {
     const response = await axios.get<GetItemsResponse>(getAPIRoute('item'));
+    const pk = getPK();
+    for (let item of response.data) {
+      for (let value of item.values) {
+        console.log(value.value);
+        value.value = new CryptObject(value.value).decrypt(pk);
+        console.log(value.value);
+      }
+    }
+
     this.setState({
       items: response.data,
     });
@@ -92,13 +105,16 @@ class IndexPage extends React.Component<WithRouterProps, State> {
     });
   };
 
+  public renderItems = () => {
+    return this.state.items.map((item) => <ModalItemClickable  key={item.ID} item={item} />);
+  }
+
   render() {
     return (
       <UIShell loading={this.state.loading}>
         <Content>
           <Search labelText="search" title="Search Your Vault" />
-          <br />
-          <h3>All Items</h3>
+          <h3 style={{ marginTop: "1rem" }}>All Items</h3>
           <hr />
           {this.state.error ? (
             <ToastNotification
@@ -112,6 +128,11 @@ class IndexPage extends React.Component<WithRouterProps, State> {
           ) : (
             <></>
           )}
+          <Grid style={{ marginTop: "1rem" }}>
+            <Row>
+              { this.renderItems() }
+            </Row>
+          </Grid>
         </Content>
         <FormAddItem
           types={this.state.types}

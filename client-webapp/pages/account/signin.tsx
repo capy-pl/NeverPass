@@ -146,10 +146,6 @@ class SignIn extends React.PureComponent<WithRouterProps, State> {
       });
 
       this.props.router.push(ClientRouteMap['root']);
-
-      this.setState({
-        loading: false,
-      });
     } catch (err) {
       this.setState({
         error: true,
@@ -171,7 +167,7 @@ class SignIn extends React.PureComponent<WithRouterProps, State> {
         modalHeading="Sign in With Your LastPass Account"
         primaryButtonText="Sign In"
         secondaryButtonText="Create New Account"
-        primaryButtonDisabled={this.state.primaryButtonDisabled}
+        primaryButtonDisabled={this.state.loading}
         onRequestSubmit={this.onClickPrimaryButton}
         onSecondarySubmit={this.onClickSecondaryButton}
       >
