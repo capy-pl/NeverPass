@@ -49,7 +49,7 @@ export default class FormAddItem extends React.PureComponent<Props, State> {
       return (
         <SelectItem
           key={type.ID}
-          text={capitalize(type.name)}
+          text={capitalize(type.verboseName)}
           value={type.name}
         />
       );
@@ -75,7 +75,7 @@ export default class FormAddItem extends React.PureComponent<Props, State> {
         key={fieldDefinition.ID}
         id={fieldDefinition.name}
         style={{ marginBottom: '1rem' }}
-        labelText={capitalize(fieldDefinition.name)}
+        labelText={capitalize(fieldDefinition.verboseName)}
         onChange={this.onValueChange(fieldDefinition.name)}
         value={this.state.fields[fieldDefinition.name] || ''}
         warnText="The field is required."
@@ -218,9 +218,11 @@ export default class FormAddItem extends React.PureComponent<Props, State> {
             <SelectItemGroup label="Types">
               {this.getSelectItemsOptions()}
             </SelectItemGroup>
+            <SelectItemGroup label="Custom types">
+              <SelectItem disabled value="custom" text="Add custom types" />
+            </SelectItemGroup>
           </Select>
           <br />
-
           {this.getForm()}
         </ModalBody>
       </Modal>
