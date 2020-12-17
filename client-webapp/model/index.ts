@@ -23,12 +23,14 @@ export interface User {
 export interface Type extends GoModel {
   id: number;
   name: string;
+  verboseName: string;
   fieldDefinitions: FieldDefinition[];
   default: boolean;
 }
 
 export interface FieldDefinition extends GoModel {
   name: string;
+  verboseName: string;
   maxlength: number;
   minlength: number;
   encrypted: boolean;

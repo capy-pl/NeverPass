@@ -114,11 +114,10 @@ class SignUp extends React.PureComponent<WithRouterProps, State> {
         body
       );
 
+      this.props.router.push(ClientRouteMap['message']);
       this.setState({
         loading: false,
       });
-
-      this.props.router.push(ClientRouteMap['message']);
     } catch (err) {
       this.setState({
         error: true,
@@ -151,6 +150,7 @@ class SignUp extends React.PureComponent<WithRouterProps, State> {
             labelText="Email Address"
             type="text"
             onChange={this.onChangeAccountInput}
+            disabled={this.state.loading}
             value={this.state.account}
             warnText="Please enter an valid email address."
             warn={this.state.showAccountWarning}
@@ -160,6 +160,7 @@ class SignUp extends React.PureComponent<WithRouterProps, State> {
             labelText="Password"
             type="password"
             value={this.state.password}
+            disabled={this.state.loading}
             onChange={this.onChangePasswordInput}
             warnText="Please enter a valid password."
             warn={this.state.showPasswordWarning}
@@ -168,6 +169,7 @@ class SignUp extends React.PureComponent<WithRouterProps, State> {
             id="check-password"
             labelText="Check your password again"
             type="password"
+            disabled={this.state.loading}
             value={this.state.checkedPassword}
             onChange={this.onChangeCheckPasswordInput}
             warnText="Passwords do not match."
