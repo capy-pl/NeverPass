@@ -9,6 +9,7 @@ import (
 	"github.com/password-management/server/core/auth"
 	"github.com/password-management/server/core/db"
 	"github.com/password-management/server/models"
+	"gorm.io/gorm"
 )
 
 type addItemRequestBody struct {
@@ -125,7 +126,6 @@ func viewItemHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 type updateItemRequestBody struct {
-	ItemID int
 	Fields map[string]string
 }
 
@@ -174,8 +174,17 @@ func updateItemHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	updateResult := conn.DB.Save(&item)
-	if updateResult.Error != nil {
+	err = conn.DB.Transaction(func(tx *gorm.DB) error {
+		for _, value := range item.Values {
+			result := tx.Model(&value).Updates(models.ItemField{Value: value.Value})
+			if result.Error != nil {
+				return result.Error
+			}
+		}
+		return nil
+	})
+
+	if err != nil {
 		http.Error(w, "", 400)
 		return
 	}
