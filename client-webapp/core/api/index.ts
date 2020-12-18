@@ -35,3 +35,7 @@ export type AddItemRequest = {
   typeid: number;
   fields: { [key: string]: string };
 };
+
+export type EditItemRequest = {
+  fields: { [key: string]: string };
+}

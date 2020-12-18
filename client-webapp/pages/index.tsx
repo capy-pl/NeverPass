@@ -61,9 +61,7 @@ class IndexPage extends React.Component<WithRouterProps, State> {
     const pk = getPK();
     for (let item of response.data) {
       for (let value of item.values) {
-        console.log(value.value);
         value.value = new CryptObject(value.value).decrypt(pk);
-        console.log(value.value);
       }
     }
 
@@ -106,14 +104,14 @@ class IndexPage extends React.Component<WithRouterProps, State> {
   };
 
   public renderItems = () => {
-    return this.state.items.map((item) => <ModalItemClickable  key={item.ID} item={item} />);
+    return this.state.items.map((item) => <ModalItemClickable onConfirm={this.fetchItems}  key={item.ID} item={item} />);
   }
 
   render() {
     return (
       <UIShell loading={this.state.loading}>
         <Content>
-          <Search labelText="search" title="Search Your Vault" />
+          {/* <Search labelText="search" title="Search Your Vault" /> */}
           <h3 style={{ marginTop: "1rem" }}>All Items</h3>
           <hr />
           {this.state.error ? (

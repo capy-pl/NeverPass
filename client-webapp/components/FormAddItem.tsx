@@ -204,7 +204,6 @@ export default class FormAddItem extends React.PureComponent<Props, State> {
             id="type"
             size="xl"
             labelText=""
-            defaultValue="placeholder"
             onChange={this.onTypeSelectChange}
             value={this.state.type}
             disabled={this.state.loading}

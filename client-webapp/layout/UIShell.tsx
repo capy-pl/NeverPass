@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {
-  Content,
   Header,
   HeaderMenuButton,
   HeaderName,
@@ -52,12 +51,12 @@ export default class UIShell extends React.Component<Props, State> {
             NeverPass
           </HeaderName>
           <HeaderNavigation aria-label="Header navigation">
-            <HeaderMenuItem isCurrentPage href="#">
+            {/* <HeaderMenuItem isCurrentPage href="#">
               All
             </HeaderMenuItem>
             <HeaderMenuItem href="#">Passwords</HeaderMenuItem>
             <HeaderMenuItem href="#">Payment Cards</HeaderMenuItem>
-            <HeaderMenuItem href="#">Bank Accounts</HeaderMenuItem>
+            <HeaderMenuItem href="#">Bank Accounts</HeaderMenuItem> */}
           </HeaderNavigation>
           <SideNav
             aria-label="Side navigation"
@@ -67,10 +66,10 @@ export default class UIShell extends React.Component<Props, State> {
           >
             <SideNavItems>
               <HeaderSideNavItems>
-                <HeaderMenuItem href="#">All</HeaderMenuItem>
+                {/* <HeaderMenuItem href="#">All</HeaderMenuItem>
                 <HeaderMenuItem href="#">Passwords</HeaderMenuItem>
                 <HeaderMenuItem href="#">Payment Cards</HeaderMenuItem>
-                <HeaderMenuItem href="#">Bank Accounts</HeaderMenuItem>
+                <HeaderMenuItem href="#">Bank Accounts</HeaderMenuItem> */}
               </HeaderSideNavItems>
             </SideNavItems>
           </SideNav>
