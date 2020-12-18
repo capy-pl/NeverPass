@@ -3,17 +3,40 @@ package db
 import (
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/password-management/server/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-const host = "127.0.0.1"
-const dbName = "pwdmg"
-const dbUsername = "admin"
-const dbPwd = "admin"
-const port = "5432"
+var dbHost string = "127.0.0.1"
+var dbName string = "pwdmg"
+var dbUserName string = "admin"
+var dbPwd string = "admin"
+var port string = "5432"
+
+func init() {
+	if _, hasDbHost := os.LookupEnv("DB_HOSTNAME"); hasDbHost {
+		dbHost = os.Getenv("DB_HOSTNAME")
+	}
+
+	if _, hasDbName := os.LookupEnv("DB_NAME"); hasDbName {
+		dbName = os.Getenv("DB_NAME")
+	}
+
+	if _, hasDbUsername := os.LookupEnv("DB_USERNAME"); hasDbUsername {
+		dbUserName = os.Getenv("DB_USERNAME")
+	}
+
+	if _, hasDbPwd := os.LookupEnv("DB_PWD"); hasDbPwd {
+		dbPwd = os.Getenv("DB_PWD")
+	}
+
+	if _, hasDbPort := os.LookupEnv("DB_PORT"), hasDbPort {
+		port = os.Getenv("DB_PORT")
+	}
+}
 
 // Connection represent the connection between the application and sql server.
 type Connection struct {
@@ -25,9 +48,9 @@ var conn = Connection{}
 // New function tries to establish a new connection to sql server.
 func (conn *Connection) New() {
 	dsn := fmt.Sprintf("user=%s password=%s host=%s dbname=%s port=%s",
-		dbUsername,
+		dbUserName,
 		dbPwd,
-		host,
+		dbHost,
 		dbName,
 		port)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
