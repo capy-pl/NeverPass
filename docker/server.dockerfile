@@ -7,6 +7,6 @@ ENV GOOS=linux GOARCH=amd64
 RUN go get -v ./...
 RUN go build -o /bin/pwd-server .
 
-FROM archlinux:latest AS production
+FROM archlinux:latest AS production-k8s
 COPY --from=builder /bin/pwd-server /bin/
 CMD ["/bin/pwd-server", "webserver"]
