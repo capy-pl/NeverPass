@@ -8,7 +8,6 @@ import { UserCreateRequest, UserCreateResponse } from '../../core/api';
 import { validateEmail } from '../../core/util';
 import { ClientRouteMap, getAPIRoute } from '../../core/routemap';
 import { generateSecretKey, CryptObject, sha256 } from '../../core/crypt';
-import store from '../../store';
 
 type State = {
   account: string;

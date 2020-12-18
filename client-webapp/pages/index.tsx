@@ -7,7 +7,6 @@ import {
   Content,
   Grid,
   Row,
-  Search,
   ToastNotification,
 } from 'carbon-components-react';
 import { Add16 } from '@carbon/icons-react';

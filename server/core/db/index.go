@@ -33,7 +33,7 @@ func init() {
 		dbPwd = os.Getenv("DB_PWD")
 	}
 
-	if _, hasDbPort := os.LookupEnv("DB_PORT"), hasDbPort {
+	if _, hasDbPort := os.LookupEnv("DB_PORT"); hasDbPort {
 		port = os.Getenv("DB_PORT")
 	}
 }

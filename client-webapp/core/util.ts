@@ -1,4 +1,3 @@
-import { current } from '@reduxjs/toolkit';
 import store from './../store';
 
 export function validateEmail(email: string): Boolean {

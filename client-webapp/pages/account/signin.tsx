@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Ref } from 'react';
+import React, { ChangeEvent } from 'react';
 import { withRouter } from 'next/router';
 import { WithRouterProps } from 'next/dist/client/with-router';
 import { FluidForm, TextInput, Modal, Loading } from 'carbon-components-react';
