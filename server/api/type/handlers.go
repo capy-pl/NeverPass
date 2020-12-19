@@ -16,19 +16,22 @@ import (
 func viewTypesHandler(w http.ResponseWriter, r *http.Request) {
 	userID := auth.FetchIDInRequest(r)
 	user := models.User{Model: gorm.Model{ID: uint(userID)}}
-	var customTypes []models.Type
 
 	conn := db.Get()
-	err := conn.DB.Model(&user).Preload("FieldDefinitions").Association("Type").Find(&customTypes)
+	err := conn.DB.
+		Preload("Type.FieldDefinitions").
+		Find(&user).
+		Error
+
 	if err != nil {
 		http.Error(w, "Error code: 100", 400)
 		return
 	}
 
 	var defaultTypes []models.Type
-	conn.DB.Where(&models.Type{Default: true}).Find(&defaultTypes)
+	conn.DB.Where(&models.Type{Default: true}).Preload("FieldDefinitions").Find(&defaultTypes)
 
-	types := append(defaultTypes, customTypes...)
+	types := append(defaultTypes, user.Type...)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(types)
 }
