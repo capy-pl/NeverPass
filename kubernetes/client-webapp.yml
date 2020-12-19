@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-webapp
+spec:
+  selector:
+    matchLabels:
+      app: client-webapp
+  template:
+    metadata:
+      labels:
+        app: client-webapp
+    spec:
+      containers:
+      - name: client-webapp
+        image: <Image>
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-webapp-service
+spec:
+  selector:
+    app: client-webapp
+  ports:
+  - port: 3001
+    targetPort: 3000
