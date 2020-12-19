@@ -35,10 +35,9 @@ func addItemHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var fields []models.ItemField
-	for key, value := range body.Fields {
-		id, err := typeInstance.SelectFieldDefinition(key)
-		if err == nil {
-			fields = append(fields, models.ItemField{Value: value, FieldDefinitionID: int(id)})
+	for _, definition := range typeInstance.FieldDefinitions {
+		if val, ok := body.Fields[definition.Name]; ok {
+			fields = append(fields, models.ItemField{Value: val, FieldDefinitionID: int(definition.ID)})
 		}
 	}
 
