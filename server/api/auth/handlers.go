@@ -37,6 +37,7 @@ func authLoginHandler(w http.ResponseWriter, r *http.Request) {
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(body.Password))
 	if err != nil {
 		http.Error(w, "", 401)
+		return
 	}
 	token := auth.IssueSignedToken(strconv.Itoa(int(user.ID)))
 	w.Header().Set("Content-Type", "application/json")

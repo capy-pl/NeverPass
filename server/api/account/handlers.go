@@ -49,8 +49,8 @@ func addAcountGETHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user := models.User{Account: body.Account, Password: string(hashedPassword), Pk: body.Pk}
 	conn := db.Get()
+	user := models.User{Account: body.Account, Password: string(hashedPassword), Pk: body.Pk}
 	err = conn.DB.Create(&user).Error
 	if err != nil {
 		http.Error(w, "Error Code: 103", 400)

@@ -119,6 +119,12 @@ func CleanDB(conn *Connection) error {
 		log.Fatal(err)
 	}
 
+	log.Println("Drop table: user_types.")
+	err = db.Migrator().DropTable("user_types")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	log.Println("Drop table: field_definitions.")
 	err = db.Migrator().DropTable(&models.FieldDefinition{})
 	if err != nil {
