@@ -7,13 +7,12 @@ import {
   Content,
   Grid,
   Row,
-  Search,
   ToastNotification,
 } from 'carbon-components-react';
 import { Add16 } from '@carbon/icons-react';
 
 import UIShell from '../layout/UIShell';
-import { FormAddItem, ModalItemClickable } from '../components';
+import { ModalAddClickable, ModalItemClickable } from '../components';
 import { ClientRouteMap, getAPIRoute } from '../core/routemap';
 import store from '../store';
 import { GetTypesResponse, GetItemsResponse } from '../core/api';
@@ -26,14 +25,14 @@ type State = {
   error: boolean;
   items: Item[];
   types: Type[];
-  showFormAddItem: boolean;
+  showModalAddClickable: boolean;
 };
 
 class IndexPage extends React.Component<WithRouterProps, State> {
   public state: State = {
     loading: true,
     error: false,
-    showFormAddItem: false,
+    showModalAddClickable: false,
     items: [],
     types: [],
   };
@@ -87,13 +86,13 @@ class IndexPage extends React.Component<WithRouterProps, State> {
     }
   };
 
-  public toggleFormAddItem = () => {
+  public toggleModalAddClickable = () => {
     this.setState({
-      showFormAddItem: !this.state.showFormAddItem,
+      showModalAddClickable: !this.state.showModalAddClickable,
     });
   };
 
-  public onFormAddItemSave = async () => {
+  public onModalAddClickableItemSave = async () => {
     this.setState({
       loading: true,
     });
@@ -102,6 +101,16 @@ class IndexPage extends React.Component<WithRouterProps, State> {
       loading: false,
     });
   };
+
+  public onModalAddClickableTypeSave = async () => {
+    this.setState({
+      loading: true,
+    });
+    await this.fetchTypes();
+    this.setState({
+      loading: false,
+    });
+  }
 
   public renderItems = () => {
     return this.state.items.map((item) => <ModalItemClickable onConfirm={this.fetchItems}  key={item.ID} item={item} />);
@@ -132,16 +141,17 @@ class IndexPage extends React.Component<WithRouterProps, State> {
             </Row>
           </Grid>
         </Content>
-        <FormAddItem
+        <ModalAddClickable
           types={this.state.types}
-          open={this.state.showFormAddItem}
-          closeModal={this.toggleFormAddItem}
-          onSave={this.onFormAddItemSave}
+          open={this.state.showModalAddClickable}
+          closeModal={this.toggleModalAddClickable}
+          onSaveItem={this.onModalAddClickableItemSave}
+          onSaveType={this.onModalAddClickableTypeSave}
         />
         <Button
           style={{ position: 'fixed', right: '2rem', bottom: '2rem' }}
           renderIcon={Add16}
-          onClick={this.toggleFormAddItem}
+          onClick={this.toggleModalAddClickable}
           iconDescription="Add a New Item"
           hasIconOnly
         />

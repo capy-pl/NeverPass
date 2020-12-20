@@ -55,13 +55,9 @@ func viewTypeHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(typeModel)
 }
 
-type fieldDef struct {
-	Name string
-}
-
 type addTypePostBody struct {
 	Name             string
-	FieldDefinitions []fieldDef
+	FieldDefinitions []string
 }
 
 func addTypeHandler(w http.ResponseWriter, r *http.Request) {
@@ -76,12 +72,12 @@ func addTypeHandler(w http.ResponseWriter, r *http.Request) {
 	fieldDefinitions := make([]models.FieldDefinition, 0)
 
 	for _, val := range body.FieldDefinitions {
-		if len(val.Name) == 0 {
+		if len(val) == 0 {
 			continue
 		}
 
 		fieldDefinitions = append(fieldDefinitions, models.FieldDefinition{
-			VerboseName: val.Name,
+			VerboseName: val,
 			Name:        util.UUID(),
 			Encrypted:   true,
 		})
@@ -112,7 +108,8 @@ func addTypeHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		err = tx.Model(&typeInstance).
 			Association("FieldDefinitions").
-			Append(append(fieldDefinitions, nameDef))
+			Append(append([]models.FieldDefinition{nameDef}, fieldDefinitions...))
+
 		if err != nil {
 			return err
 		}

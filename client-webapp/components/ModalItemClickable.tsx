@@ -15,7 +15,7 @@ import {
 
 import FormEditItem from './FormEditItem';
 import FormViewItem from './FormViewItem';
-import { Item, ItemField, Type } from '../model';
+import { Item } from '../model';
 import { capitalize, getPK } from '../core/util';
 import { CryptObject } from '../core/crypt';
 import { EditItemRequest } from '../core/api';
@@ -184,6 +184,7 @@ export default class ModalItemClickable extends React.PureComponent<Props, State
           warnText: 'Server error. Please retry later.'
         });
       }
+      return
     }
 
     if (this.state.prevMode === 'view') {

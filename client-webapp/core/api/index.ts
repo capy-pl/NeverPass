@@ -39,3 +39,10 @@ export type AddItemRequest = {
 export type EditItemRequest = {
   fields: { [key: string]: string };
 }
+
+export type AddTypeRequest = {
+  name: string;
+  fieldDefinitions: string[];
+};
+
+export type AddTypeResponse = Type;
