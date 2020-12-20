@@ -36,7 +36,7 @@ if [ -n "$1" ]; then
                         tsc || { "Linter errors exist. Please fix errors before building image" ; cd .. ; exit 1;}
                         cd ..
                         echo "Linter passed. Proceeding."
-                        build_client_docker_image $k8s_tag
+                        build_client_docker_image $docker_tag
                     ;;
                     server)
                         build_server_docker_image $k8s_tag
@@ -46,6 +46,9 @@ if [ -n "$1" ]; then
                     ;;
                 esac
             fi
+        ;;
+        # run docker container
+        run)
         ;;
     esac
 else
