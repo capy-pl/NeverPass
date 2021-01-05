@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pwdmg-pv-001
+  labels:
+    app: pwdmg-pv
+spec:
+  capacity:
+    storage: 5Gi
+  hostPath:
+    path: "/home/docker/data"
+    type: DirectoryOrCreate
+  accessModes:
+    - "ReadWriteOnce"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pwdmg-pv-002
+  labels:
+    app: pwdmg-pv
+spec:
+  capacity:
+    storage: 5Gi
+  hostPath:
+    path: "/home/docker/data"
+    type: DirectoryOrCreate
+  accessModes:
+    - "ReadWriteOnce"
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pwdmg-pv-003
+  labels:
+    app: pwdmg-pv
+spec:
+  capacity:
+    storage: 3Gi
+  hostPath:
+    path: "/home/docker/data"
+    type: DirectoryOrCreate
+  accessModes:
+    - "ReadWriteOnce"

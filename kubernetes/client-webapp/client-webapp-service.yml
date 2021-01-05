@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-webapp-service
+  namespace: pwdmg
+spec:
+  selector:
+    app: client-webapp
+  type: NodePort
+  ports:
+  - port: 3001
+    targetPort: 3000

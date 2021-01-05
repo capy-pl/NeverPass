@@ -14,7 +14,6 @@ COPY --from=base /opt/app/node_modules ./node_modules
 ADD env/.env.docker .env.local
 RUN yarn build
 
-
 # Production image for docker
 FROM node:lts-alpine AS production-docker
 WORKDIR /opt/app

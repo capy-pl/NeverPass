@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pwd-migration-1
+  namespace: pwdmg
+spec:
+  template:
+    spec:
+      containers:
+      - name: pwd-migration-1
+        image: capy0812/pwd-server:1.0.0
+        command: ["/bin/pwd-server",  "migrate"]
+        envFrom:
+        - configMapRef:
+            name: server-config
+        - secretRef:
+            name: server-secret
+      restartPolicy: Never
+  backoffLimit: 4

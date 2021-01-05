@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server-config
+  namespace: pwdmg
+data:
+  DB_HOSTNAME: pwdmg-db.pgo.svc.cluster.local
+  DB_PORT: '5432'
