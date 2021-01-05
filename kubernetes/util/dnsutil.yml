@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: netutil
+  labels:
+    name: netutil
+spec:
+  containers:
+  - name: netutil
+    image: praqma/network-multitool
+    resources:
+      limits:
+        memory: "128Mi"

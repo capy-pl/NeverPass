@@ -54,11 +54,11 @@ const initUserState: UserState = {
 export type TypeState = Type[];
 export type TypeActionType = 'push' | 'remove';
 
-export interface TypeAction extends Action<TypeActionType> {
-  value: Type | string;
-}
+// export interface TypeAction extends Action<TypeActionType> {
+//   value: Type | string;
+// }
 
-const initTypeState: TypeState = [];
+// const initTypeState: TypeState = [];
 
 export type ActionType =
   | GlobalActionType
@@ -66,7 +66,7 @@ export type ActionType =
   | UserActionType
   | TypeActionType;
 
-export type Actions = GlobalAction | AuthAction | UserAction | TypeAction;
+export type Actions = GlobalAction | AuthAction | UserAction;
 
 export const globalReducer: Reducer<GlobalState, GlobalAction> = (
   state: GlobalState = initGlobalState,
@@ -122,9 +122,21 @@ export const userReducer: Reducer<UserState, UserAction> = (
   }
 };
 
-export const typeReducer: Reducer<TypeState, TypeAction> = (
-  state: TypeState = initTypeState,
-  action: TypeAction
-): TypeState => {
-  return state;
-};
+// export const typeReducer: Reducer<TypeState, TypeAction> = (
+//   state: TypeState = initTypeState,
+//   action: TypeAction
+// ): TypeState => {
+//   switch (action.type) {
+//     case 'set':
+//       if (action.key in state) {
+//         return {
+//           ...state,
+//           [action.key]: action.value,
+//         };
+//       }
+//       return state;
+//     default:
+//       return state;
+//   }
+//   return state;
+// };

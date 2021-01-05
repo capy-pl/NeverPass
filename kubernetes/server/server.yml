@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+  namespace: pwdmg
+spec:
+  selector:
+    matchLabels:
+      app: server
+  replicas: 2
+  template:
+    metadata:
+      namespace: pwdmg
+      labels:
+        app: server
+    spec:
+      containers:
+      - name: server
+        image: capy0812/pwd-server:1.0.0
+        command: ["/bin/pwd-server",  "webserver"]
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+
+        envFrom:
+        - configMapRef:
+            name: server-config
+        - secretRef:
+            name: server-secret

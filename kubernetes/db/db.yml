@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pwdmg-statefulset
+  namespace: pwdmg
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pwdmg-postgres
+  serviceName: pwdmg-statefulset-service
+  template:
+    metadata:
+      name: pwdmg-postgres
+      namespace: pwdmg
+      labels:
+        app: pwdmg-postgres
+    spec:
+      containers:
+        - name: pwdmg-postgres
+
+          image: postgres:latest
+          ports:
+            - name: postgres
+              containerPort: 5432
+              protocol: TCP
+            
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+
+          envFrom:
+            - configMapRef:
+                name: postgres-db-config
+
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - exec pg_isready --host $POD_IP
+            failureThreshold: 6
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - exec pg_isready --host $POD_IP
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 3
+          volumeMounts:
+          - name: postgres
+            mountPath: /var/lib/postgresql/data
+  
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres
+      namespace: pwdmg
+    spec:
+      selector:
+        matchLabels: 
+          app: pwdmg-pv       
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 3Gi

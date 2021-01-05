@@ -1,0 +1,20 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: pwd-populate
+  namespace: pwdmg
+spec:
+  template:
+    spec:
+      containers:
+      - name: pwd-populate-1
+        image: capy0812/pwd-server:1.0.0
+        command: ["/bin/pwd-server",  "populate"]
+        envFrom:
+        - configMapRef:
+            name: server-config
+        - secretRef:
+            name: server-secret
+
+      restartPolicy: Never
+  backoffLimit: 4
