@@ -33,7 +33,7 @@ docker_network_name=""
 # specify which target phase you want to build
 build_client_image () {
     if [[ "$1" == "$k8s_tag" ]]; then
-        file_path="./docker/client-webapp.k8s.dockerfile"
+        file_path="./docker/client-webapp.k8s.local.dockerfile"
         img_name="${client_image_full_name/platform/k8s}"
     fi
     if [[ "$1" == "$docker_tag" ]]; then
