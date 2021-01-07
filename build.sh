@@ -93,6 +93,7 @@ while [[ $# -gt 0 ]]; do
         ;;
         *)
             echo "not a valid command or option."
+            exit 1
         ;;
     esac
 done
