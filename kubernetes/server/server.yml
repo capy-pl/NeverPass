@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: capy0812/pwd-server:1.0.0
+        image: capy0812/pwd-server:1.1.0
         command: ["/bin/pwd-server",  "webserver"]
         resources:
           limits:
