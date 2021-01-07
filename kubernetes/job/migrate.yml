@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: pwd-migration-1
+  name: pwd-migration-2
   namespace: pwdmg
 spec:
   template:
     spec:
       containers:
-      - name: pwd-migration-1
+      - name: pwd-migration-2
         image: capy0812/pwd-server:1.1.0
         command: ["/bin/pwd-server",  "migrate"]
         envFrom:
