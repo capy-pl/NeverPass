@@ -26,7 +26,11 @@ func LoginRequired(next http.Handler) http.Handler {
 			return
 		}
 
-		userID, _ := strconv.ParseUint(id, 10, 64)
+		userID, err := strconv.ParseUint(id, 10, 64)
+		if err != nil {
+			http.Error(w, "", 401)
+			return
+		}
 		ctx := context.WithValue(r.Context(), auth.UserIDKey("Id"), userID)
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
